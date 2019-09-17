@@ -7,9 +7,7 @@
 
 import Foundation
 
+print("added")
 
 print("Hi")
 print("everyone")
-print("1 ")
-print("2 ")
-print("3 ")
