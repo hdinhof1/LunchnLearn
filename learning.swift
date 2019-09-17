@@ -7,3 +7,5 @@
 
 import Foundation
 
+print("Hi")
+print("everyone")
