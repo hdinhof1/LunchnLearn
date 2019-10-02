@@ -17,4 +17,4 @@ print("switching yml to checkout@v1")
 print("copied and pasted from the sample workflow")
 print("modify line git diff learning.swift")
 
-print("lets do in a pr")
+print("lets do in a changed file in a pr")
