@@ -17,6 +17,5 @@ jobs:
     steps:
       - name: Run a command here
         run: |
-          echo git diff --unified=0 -S'print(' learning.swift
+          git diff --unified=0 -G'print' learning.swift 
           echo Done!
-
