@@ -23,3 +23,4 @@ jobs:
             echo "We modified the line in this file make sure its correct"
           fi
           echo Done!
+        shell: bash
