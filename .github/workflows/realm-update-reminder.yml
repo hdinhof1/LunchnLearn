@@ -16,13 +16,13 @@ jobs:
 
     steps:
       - name: Run a command here
-      env:
-        GIT_DIFF: ${{ git diff --unified=0 -S'print(' learning.swift }}
-        GIT_DIFF_ECH: ${{ echo git diff --unified=0 -S'print(' learning.swift }}
-      run: |
-        echo thediff "$GIT_DIFF"
-        echo thediff_E "$GIT_DIFF_ECH"
+        env:
+          GIT_DIFF: ${{ git diff --unified=0 -S'print(' learning.swift }}
+          GIT_DIFF_ECH: ${{ echo git diff --unified=0 -S'print(' learning.swift }}
+        run: |
+          echo thediff "$GIT_DIFF"
+          echo thediff_E "$GIT_DIFF_ECH"
       - name: Check if diff was nil
-      if: $GIT_DIFF == ''
-      run: echo git_dif was nil
+        if: $GIT_DIFF == ''
+        run: echo git_dif was nil
 
