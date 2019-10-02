@@ -1,6 +1,6 @@
 name: realm-update-reminder
 on:
-  pull_request: ## should be on pull request
+  push: ## should be on pull request
     branches:
       - master
       - staging
