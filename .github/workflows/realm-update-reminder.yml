@@ -8,11 +8,13 @@ on:
       - 'learning.swift'
 
 jobs:
-  remind:
+  build:
+
+    name: remind
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: run a command here
-    run: echo Hello, realm!
+      - uses: actions/checkout@v1
+      - name: Run a command here
+        run: echo Hello, realm!
