@@ -16,11 +16,7 @@ jobs:
 
     steps:
       - name: Run a command here
-        env:
-          GIT_DIFF_ECH: ${{ echo git diff --unified=0 -S'print(' learning.swift }}
-        run: |
-          echo thediff_E "$GIT_DIFF_ECH"
-      - name: Check if diff was nil
-        if: $GIT_DIFF_ECH == ''
-        run: echo git_dif_ec was nil
+        run: 
+          echo git diff --unified=0 -S'print(' learning.swift
+          echo Done!
 
