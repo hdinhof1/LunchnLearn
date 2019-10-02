@@ -1,6 +1,6 @@
 name: realm-update-reminder
 on:
-  push: ## should be on pull request
+  pull_request: ## should be on pull request
     branches:
       - master
       - staging
@@ -16,4 +16,12 @@ jobs:
 
     steps:
       - name: Run a command here
-        run: echo Hello, realm!
+      env:
+        GIT_DIFF: ${{ git diff --unified=0 -S'print(' learning.swift }}
+        GIT_DIFF_ECH: ${{ echo git diff --unified=0 -S'print(' learning.swift }}
+      run: |
+        echo thediff "$GIT_DIFF"
+        echo thediff_E "$GIT_DIFF_ECH"
+      if: $GIT_DIFF == ''
+      run: echo git_dif was nil
+
