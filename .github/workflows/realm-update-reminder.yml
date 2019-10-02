@@ -1,8 +1,8 @@
 name: realm-update-reminder
 on:
-    push: ## should be on pull request
-        branches:
-            - master
-            - staging
+  push: ## should be on pull request
+    branches:
+      - master
+      - staging
     paths:
-        - 'learning.swift'
+      - 'learning.swift'
