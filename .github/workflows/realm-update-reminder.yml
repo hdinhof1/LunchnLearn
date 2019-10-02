@@ -16,7 +16,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: Run a command here
+      - name: Search for modified lines beginning with "print" here
         run: |
-          echo $(git diff --unified=0 -G'print' learning.swift)
+          search=$(git diff --unified=0 -G'print' learning.swift)
+          if [ ! -z "$search" ]; then
+            echo "We modified the line in this file make sure its correct"
+          fi
           echo Done!
