@@ -6,3 +6,13 @@ on:
       - staging
     paths:
       - 'learning.swift'
+
+jobs:
+  remind:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@staging
+    - name: run a command here
+    run: echo Hello, realm!
