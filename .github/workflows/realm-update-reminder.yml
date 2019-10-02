@@ -21,6 +21,6 @@ jobs:
         run: |
           echo thediff_E "$GIT_DIFF_ECH"
       - name: Check if diff was nil
-        if: $GIT_DIFF == ''
-        run: echo git_dif was nil
+        if: $GIT_DIFF_ECH == ''
+        run: echo git_dif_ec was nil
 
