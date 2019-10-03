@@ -39,16 +39,16 @@ jobs:
           STRATEGY_CONTEXT: ${{ toJson(strategy) }}
         run: echo "$STRATEGY_CONTEXT"
       - name: Prepare repo
-        run: | 
+        run: |
           echo "${GITHUB_REF}"
-          git fetch
           git checkout test-work
+          git fetch
           echo $(git branch)
           echo $(git log -n5 --pretty=oneline)
       - name: Search for modified lines beginning with print here
         run: |
           echo Starting multiline
-          $(git diff develop test-work --unified=0 -G'print' learning.swift)
+          search=$(git diff develop test-work --unified=0 -G'print' learning.swift)
           if [ ! -z "$search" ]; then
             echo "We modified the line in this file make sure its correct"
             echo "Good!"
