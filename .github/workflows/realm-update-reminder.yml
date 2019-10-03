@@ -41,7 +41,7 @@ jobs:
       - name: Search for modified lines beginning with print here
         run: |
           echo Starting multiline
-          echo "${ git diff }"
+          echo "${ git status }"
           search=${git diff --unified=0 -G'print' learning.swift}
           if [ ! -z "$search" ]; then
             echo "We modified the line in this file make sure its correct"
