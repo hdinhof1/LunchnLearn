@@ -39,8 +39,11 @@ jobs:
           STRATEGY_CONTEXT: ${{ toJson(strategy) }}
         run: echo "$STRATEGY_CONTEXT"
       - name: Prepare repo
+        env:
+          STRATEGY_CONTEXT: ${{ github.event.after }}
         run: |
           echo "${GITHUB_REF}"
+          echo "current commit sha: $STRATEGY_CONTEXT"
           git checkout test-work
           git fetch
           echo $(git branch)
@@ -58,3 +61,4 @@ jobs:
             echo "failure"
             exit 1
           fi
+        shell: bash
