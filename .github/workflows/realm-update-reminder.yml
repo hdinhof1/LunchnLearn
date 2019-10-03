@@ -41,6 +41,7 @@ jobs:
       - name: Prepare repo
         run: | 
           echo "${GITHUB_REF}"
+          git fetch
           git checkout test-work
           echo $(git branch)
           echo $(git log -n5 --pretty=oneline)
