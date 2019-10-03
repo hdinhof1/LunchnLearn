@@ -38,6 +38,8 @@ jobs:
         env:
           STRATEGY_CONTEXT: ${{ toJson(strategy) }}
         run: echo "$STRATEGY_CONTEXT"
+      - name: Prepare repo
+        run: git checkout "${GITHUB_REF:11}"
       - name: Search for modified lines beginning with print here
         env:
           DIFF_CONTEXT: ${{ git diff }}
