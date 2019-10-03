@@ -38,14 +38,16 @@ jobs:
         env:
           STRATEGY_CONTEXT: ${{ toJson(strategy) }}
         run: echo "$STRATEGY_CONTEXT"
-      - name: Search for modified lines beginning with "print" here
+      - name: Search for modified lines beginning with print here
+        env:
+          DIFF_CONTEXT: ${{ git diff }}
         run: |
           echo Starting multiline
-          echo $(diff)
+          echo "$DIFF_CONTEXT"
           search=$(git diff --unified=0 -G'print' learning.swift)
           if [ ! -z "$search" ]; then
             echo "We modified the line in this file make sure its correct"
-            echo Good!
+            echo "Good!"
             exit 0
           else 
             echo "failure"
