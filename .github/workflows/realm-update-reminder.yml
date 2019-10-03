@@ -41,8 +41,9 @@ jobs:
       - name: Prepare repo
         run: | 
           echo "${GITHUB_REF}"
-          echo $(git branch)
           git checkout test-work
+          echo $(git branch)
+          echo $(git log -n5 --pretty=oneline)
       - name: Search for modified lines beginning with print here
         run: |
           echo Starting multiline
