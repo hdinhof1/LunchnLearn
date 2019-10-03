@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - name: Checkout @v1
-        run: echo checked out
+      #- uses: actions/checkout@v1
+      #- name: Checkout @v1
+      #  run: echo checked out
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
@@ -38,10 +38,11 @@ jobs:
         env:
           STRATEGY_CONTEXT: ${{ toJson(strategy) }}
         run: echo "$STRATEGY_CONTEXT"
+      - name: Prepare repo
+        run: git checkout "${GITHUB_REF:11}"
       - name: Search for modified lines beginning with print here
         run: |
           echo Starting multiline
-          echo "${ git status }"
           search=${git diff --unified=0 -G'print' learning.swift}
           if [ ! -z "$search" ]; then
             echo "We modified the line in this file make sure its correct"
