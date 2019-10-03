@@ -41,6 +41,7 @@ jobs:
       - name: Prepare repo
         run: | 
           echo "${GITHUB_REF}"
+          echo $(git branch)
           git checkout test-work
       - name: Search for modified lines beginning with print here
         run: |
