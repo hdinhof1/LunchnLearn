@@ -74,7 +74,7 @@ jobs:
             exit 0
           else 
             echo "failure"
-            echo "Empty string found make sure that $before < $after"
+            echo "Empty or Invalid realm version found make sure that $before < $after"
             echo "Instead got $search"
             exit 1
           fi
