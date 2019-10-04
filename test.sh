@@ -1,13 +1,15 @@
-search=$(git diff master --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
-after=$(echo $search | grep + | egrep -o [0-9]+)
-before=$(echo $search | grep - | egrep -o [0-9]+)
-if [ ! -z "$search" ]
+search=$(git diff 31c6b3f0f2c46ff006eece209849e0bed1d7c4a8 --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
+before=$(echo $search | egrep -o [0-9]+ | head -1)
+after=$(echo $search | egrep -o [0-9]+ | tail -1 )
+if [[ (! -z "$search") && "$before" -lt "$after" ]]
 then
-	echo "This is not an empty string success $search"
+	echo "This is not an empty string success"
+	echo "- number is $before"
 	echo "+ number is $after"
 	exit 0
 else 
-	echo "Empty string found"
+	echo "Empty string found make sure that $before < $after"
+	echo "Instead got $search"
 	exit 1
 fi
 echo Done!

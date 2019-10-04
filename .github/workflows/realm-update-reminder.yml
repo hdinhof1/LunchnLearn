@@ -62,16 +62,20 @@ jobs:
         run: |
           echo Starting multiline
           search=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
-          #before=$(echo $search | grep - | egrep -o [0-9]+)
-          #after=$(echo $search | grep + | egrep -o [0-9]+)
-          if [ ! -z "$search" ]
+          before=$(echo $search | egrep -o [0-9]+ | head -1)
+          after=$(echo $search | egrep -o [0-9]+ | tail -1 )
+          if [[ (! -z "$search") && "$before" -lt "$after" ]]
           then
             echo "We modified the line in this file make sure its correct"
             echo "Good!"
             echo "$search"
+            echo "- number is $before"
+            echo "+ number is $after"
             exit 0
           else 
             echo "failure"
+            echo "Empty string found make sure that $before < $after"
+            echo "Instead got $search"
             exit 1
           fi
         shell: bash
