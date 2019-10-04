@@ -1,4 +1,4 @@
-search=$(git diff 4ce19158ecac5ddeff87e87ee406fce820f823a2 --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
+search=$(git diff master --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
 after=$(echo $search | grep + | egrep -o [0-9]+)
 before=$(echo $search | grep - | egrep -o [0-9]+)
 if [ ! -z "$search" ]

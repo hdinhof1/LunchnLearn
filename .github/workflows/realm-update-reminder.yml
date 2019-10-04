@@ -56,11 +56,14 @@ jobs:
           echo "newline to trigger the bot"
           echo $(git log -n5 --pretty=oneline)
       - name: Search for modified lines beginning with print here
+        env:
+            GIT_PR_BRANCHNAME: ${{ github.head_ref }}
+            GIT_DESTINATION_BRANCHNAME: ${{ github.base_ref }}
         run: |
           echo Starting multiline
-          search=$(git diff "$GIT_DESTINATION_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
-          #before=$(echo $search | grep + | egrep -o [0-9]+)
-          #after=$(echo $search | grep - | egrep -o [0-9]+)
+          search=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
+          #before=$(echo $search | grep - | egrep -o [0-9]+)
+          #after=$(echo $search | grep + | egrep -o [0-9]+)
           if [ ! -z "$search" ]
           then
             echo "We modified the line in this file make sure its correct"
