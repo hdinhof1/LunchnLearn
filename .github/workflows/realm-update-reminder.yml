@@ -41,14 +41,16 @@ jobs:
       - name: Prepare repo
         env:
           GIT_MASTER_BRANCH_SHA: ${{ github.event.pull_request.base.sha }}
+          GIT_PR_BRANCHNAME: ${{ github.head_ref }}
+          GIT_DESTINATION_BRANCHNAME: ${{ github.base_ref }}
           GIT_COMMIT_SHA: ${{ github.event.after }}
           GIT_TOKEN: ${{ github.token }}
         run: |
           echo "${GITHUB_REF:11}"
           echo "current commit sha: $GIT_COMMIT_SHA"
-          git checkout test-work
-          git checkout master
-          git checkout test-work
+          git checkout "$GIT_PR_BRANCHNAME"
+          git checkout "$GIT_DESTINATION_BRANCHNAME"
+          git checkout "$GIT_PR_BRANCHNAME"
           #echo $(git branch)
           echo "master branch base sha is $GIT_MASTER_BRANCH_SHA"
           echo "newline to trigger the bot"
@@ -56,8 +58,8 @@ jobs:
       - name: Search for modified lines beginning with print here
         run: |
           echo Starting multiline
-          search=$(git diff 4ce19158ecac5ddeff87e87ee406fce820f823a2 --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
-          before=$(echo $search | grep + | egrep -o [0-9]+)
+          search=$(git diff "$GIT_DESTINATION_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
+          #before=$(echo $search | grep + | egrep -o [0-9]+)
           #after=$(echo $search | grep - | egrep -o [0-9]+)
           if [ ! -z "$search" ]
           then
