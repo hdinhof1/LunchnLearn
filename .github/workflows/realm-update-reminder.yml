@@ -45,7 +45,8 @@ jobs:
         run: |
           echo "${GITHUB_REF:11}"
           echo "current commit sha: $GIT_COMMIT_SHA"
-          git checkout test-work
+          git checkout origin/master
+          git checkout origin/test-work
           echo $(git branch)
           echo $(git log -n5 --pretty=oneline)
       - name: Search for modified lines beginning with print here
