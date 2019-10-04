@@ -51,6 +51,7 @@ jobs:
           git checkout test-work
           #echo $(git branch)
           echo "master branch base sha is $GIT_MASTER_BRANCH_SHA"
+          echo "newline to trigger the bot"
           echo $(git log -n5 --pretty=oneline)
       - name: Search for modified lines beginning with print here
         run: |
