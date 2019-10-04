@@ -18,4 +18,5 @@ print("copied and pasted from the sample workflow")
 print("modify line git diff learning.swift")
 
 print("lets do a changed file in a pr")
-print("at work doing more stuff here")
+print("at work more stuff here")
+Realm.configureRealm(schemaVersion: 43)
