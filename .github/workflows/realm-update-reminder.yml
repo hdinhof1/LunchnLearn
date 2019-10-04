@@ -22,22 +22,6 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
-      - name: Dump job context
-        env:
-          JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump steps context
-        env:
-          STEPS_CONTEXT: ${{ toJson(steps) }}
-        run: echo "$STEPS_CONTEXT"
-      - name: Dump runner context
-        env:
-          RUNNER_CONTEXT: ${{ toJson(runner) }}
-        run: echo "$RUNNER_CONTEXT"
-      - name: Dump strategy context
-        env:
-          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
-        run: echo "$STRATEGY_CONTEXT"
       - name: Prepare repo
         env:
           GIT_MASTER_BRANCH_SHA: ${{ github.event.pull_request.base.sha }}
@@ -55,22 +39,20 @@ jobs:
           echo "master branch base sha is $GIT_MASTER_BRANCH_SHA"
           echo "newline to trigger the bot"
           echo $(git log -n5 --pretty=oneline)
-      - name: Search for modified lines beginning with print here
+      - name: Search for higher Realm schema version
         env:
             GIT_PR_BRANCHNAME: ${{ github.head_ref }}
             GIT_DESTINATION_BRANCHNAME: ${{ github.base_ref }}
         run: |
-          echo Starting multiline
           search=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
           before=$(echo $search | egrep -o [0-9]+ | head -1)
           after=$(echo $search | egrep -o [0-9]+ | tail -1 )
           if [[ (! -z "$search") && "$before" -lt "$after" ]]
           then
-            echo "We modified the line in this file make sure its correct"
             echo "Good!"
             echo "$search"
-            echo "- number is $before"
-            echo "+ number is $after"
+            echo "- old version was $before"
+            echo "+ new version is  $after"
             exit 0
           else 
             echo "failure"
