@@ -50,7 +50,7 @@ jobs:
           echo "realm hasMatch is $hasMatch" 
           if [ "$hasMatch" == "false" ]; then 
             echo "No learning.swift is modified exiting"
-            exit 0
+            exit cancelled()
           else
             echo "Modified a Realm file, continue to check for version bump"
           fi
