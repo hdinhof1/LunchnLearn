@@ -46,14 +46,15 @@ jobs:
         run: |
           modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
           echo "modified files are $modifiedNames"
+          set +e
           filesModified=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only | egrep 'learning.swift' | cat)
+          set -e
           echo "realm filesModified are $filesModified" 
           if [ ! -z "$filesModified" ]; then 
             echo "Modified a Realm file, continue to check for version bump"
             echo "realm filesModified are $filesModified"
           else
             echo "No learning.swift is modified exiting"
-            cancelled()
           fi
           echo "Good. Now to check for other cases"
         shell: bash
