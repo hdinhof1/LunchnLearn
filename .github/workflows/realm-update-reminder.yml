@@ -46,10 +46,9 @@ jobs:
         run: |
           modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
           echo "modified files are $modifiedNames"
-          filesModified=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only | egrep 'learning.swift')
+          filesModified=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only | grep -o 'learning.swift')
           echo "realm filesModified are $filesModified" 
-          if [ ! -z "$filesModified" ]
-          then 
+          if [ ! -z "$filesModified" ]; then 
             echo "Modified a Realm file, continue to check for version bump"
             echo "realm filesModified are $filesModified" 
           else
