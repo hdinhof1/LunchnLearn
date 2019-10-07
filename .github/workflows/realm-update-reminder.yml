@@ -46,11 +46,11 @@ jobs:
         run: |
           modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
           echo "modified files are $modifiedNames"
-          hasMatch=$(echo $modifiedNames | egrep 'learning.swift' || [[ $? == 1 ]] | echo "true")
-          echo "realm filesModified are $filesModified" 
+          hasMatch=$(echo $modifiedNames | egrep 'learning.swift' || [[ $? == 1 ]] | echo "false")
+          echo "realm hasMatch is $hasMatch" 
           if "$hasMatch"; then 
             echo "Modified a Realm file, continue to check for version bump"
-            echo "realm filesModified are $filesModified"
+            echo "realm filesModified are $hasMatch"
           else
             echo "No learning.swift is modified exiting"
             exit 0
