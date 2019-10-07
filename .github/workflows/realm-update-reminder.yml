@@ -55,6 +55,7 @@ jobs:
             echo "No learning.swift is modified exiting"
             cancelled()
           fi
+        shell: bash
       - name: Compare for higher Realm schema version
         env:
             GIT_PR_BRANCHNAME: ${{ github.head_ref }}
