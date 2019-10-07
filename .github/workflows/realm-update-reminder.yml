@@ -44,7 +44,7 @@ jobs:
             GIT_PR_BRANCHNAME: ${{ github.head_ref }}
             GIT_DESTINATION_BRANCHNAME: ${{ github.base_ref }}
         run: |
-          filesToCheck='.github/workflows/realm-update-reminder.yml|learning.swift'
+          filesToCheck='learning.swift'
           filesModified=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 --name-only | egrep $filesToCheck)
           if [ ! -z "$search" ]
           then 
