@@ -48,12 +48,12 @@ jobs:
           echo "modified files are $modifiedNames"
           hasMatch=$(echo $modifiedNames | egrep 'realm' || [[ $? == 1 ]] | echo "false")
           echo "realm hasMatch is $hasMatch" 
-          if "$hasMatch"; then 
-            echo "Modified a Realm file, continue to check for version bump"
-            echo "realm filesModified are $hasMatch"
-          else
+          if [ "$hasMatch" == "false" ]; then 
             echo "No learning.swift is modified exiting"
             exit 0
+          else
+            echo "Modified a Realm file, continue to check for version bump"
+            echo "realm files modified are $hasMatch"
           fi
           echo "Good. Now to check for other cases"
         shell: bash
