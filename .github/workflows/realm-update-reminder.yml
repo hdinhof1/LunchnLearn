@@ -50,6 +50,7 @@ jobs:
           if [ ! -z "$filesModified" ]
           then 
             echo "Modified a Realm file, continue to check for version bump"
+            exit 1
           else
             echo "No learning.swift is modified exiting"
             exit 0
