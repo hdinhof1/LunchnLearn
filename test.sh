@@ -1,6 +1,8 @@
 echo "Beginning work"
 filesToCheck="learning.swift"
+modifiedNames=$(git diff master test-branch5 --name-only)
 filesModified=$(git diff master test-branch5 --name-only | egrep 'learning.swift' || "")
+filesModified=$(echo $modifiedNames | egrep 'learning.swift')
 echo "filesModified is $filesModified" 
 if [ ! -z "$filesModified" ]
 then 
