@@ -4,8 +4,6 @@ on:
     branches:
       - master
       - staging
-    paths:
-      - 'learning.swift'
 
 jobs:
   build:
@@ -13,6 +11,8 @@ jobs:
     name: remind
 
     runs-on: ubuntu-latest
+
+    timeout-minutes: 2
 
     steps:
       - uses: actions/checkout@v1
@@ -39,11 +39,20 @@ jobs:
           echo "master branch base sha is $GIT_MASTER_BRANCH_SHA"
           echo "newline to trigger the bot"
           echo $(git log -n5 --pretty=oneline)
-      - name: Search for higher Realm schema version
+      - name: Compare for higher Realm schema version
         env:
             GIT_PR_BRANCHNAME: ${{ github.head_ref }}
             GIT_DESTINATION_BRANCHNAME: ${{ github.base_ref }}
         run: |
+          modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
+          echo "modified files are $modifiedNames"
+          hasMatch=$(echo $modifiedNames | egrep 'learning.swift' || [[ $? == 1 ]] | echo "false")
+          echo "realm hasMatch is $hasMatch" 
+          if [ "$hasMatch" = "false" ]
+          then 
+            echo "No learning.swift is modified exiting"
+            exit 0
+          fi
           search=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
           before=$(echo $search | egrep -o [0-9]+ | head -1)
           after=$(echo $search | egrep -o [0-9]+ | tail -1 )

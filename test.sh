@@ -1,3 +1,16 @@
+echo "Beginning work"
+filesToCheck="learning.swift"
+modifiedNames=$(git diff master test-branch5 --name-only)
+filesModified=$(git diff master test-branch5 --name-only | egrep 'learning.swift' || "")
+filesModified=$(echo $modifiedNames | egrep 'learning.swift')
+echo "filesModified is $filesModified" 
+if [ ! -z "$filesModified" ]
+then 
+	echo "Modified a Realm file, continue to check for version bump"
+else
+	echo "No $filesToCheck is modified exiting"
+	exit 0
+fi
 search=$(git diff 31c6b3f0f2c46ff006eece209849e0bed1d7c4a8 --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
 before=$(echo $search | egrep -o [0-9]+ | head -1)
 after=$(echo $search | egrep -o [0-9]+ | tail -1 )
@@ -16,3 +29,6 @@ echo Done!
 # then do echo $search | grep + | egrep -o [0-9]+  # to get the number of +
 # the base of the merge commit (on master) is 4ce19158ecac5ddeff87e87ee406fce820f823a2 
 # we want the most recent version of master
+
+
+          # just go by filename or part of path
