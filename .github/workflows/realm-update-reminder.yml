@@ -49,7 +49,6 @@ jobs:
           then 
             echo "Modified a Realm file, continue to check for version bump"
             echo "realm filesModified are $filesModified" 
-            exit 1
           else
             echo "No learning.swift is modified exiting"
             exit 0
