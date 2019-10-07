@@ -46,7 +46,7 @@ jobs:
         run: |
           modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
           echo "modified files are $modifiedNames"
-          hasMatch=$(echo $modifiedNames | egrep 'realm' || [[ $? == 1 ]] | echo "false")
+          hasMatch=$(echo $modifiedNames | egrep 'learning.swift' || [[ $? == 1 ]] | echo "false")
           echo "realm hasMatch is $hasMatch" 
           if [ "$hasMatch" == "false" ]; then 
             echo "No learning.swift is modified exiting"
