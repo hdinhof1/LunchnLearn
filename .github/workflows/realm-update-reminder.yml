@@ -45,12 +45,10 @@ jobs:
             GIT_DESTINATION_BRANCHNAME: ${{ github.base_ref }}
         run: |
           modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
-          echo "modified files are $modifiedNames"
           hasMatch=$(echo $modifiedNames | egrep 'learning.swift' || [[ $? == 1 ]] | echo "false")
-          echo "realm hasMatch is $hasMatch" 
           if [ "$hasMatch" = "false" ]
           then 
-            echo "No learning.swift is modified exiting"
+            echo "No realm related files have been modified exiting"
             exit 0
           fi
           search=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
