@@ -45,8 +45,8 @@ jobs:
             GIT_DESTINATION_BRANCHNAME: ${{ github.base_ref }}
         run: |
           filesToCheck="learning.swift"
-          filesModified=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 --name-only | egrep $filesToCheck)
-          echo "filesModified is $filesModified" 
+          filesModified=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 --name-only | egrep "$filesToCheck")
+          echo "realm filesModified are $filesModified" 
           if [ ! -z "$filesModified" ]
           then 
             echo "Modified a Realm file, continue to check for version bump"
@@ -55,7 +55,7 @@ jobs:
             echo "No learning.swift is modified exiting"
             exit 0
           fi
-      - name: Search for higher Realm schema version
+      - name: Compare for higher Realm schema version
         env:
             GIT_PR_BRANCHNAME: ${{ github.head_ref }}
             GIT_DESTINATION_BRANCHNAME: ${{ github.base_ref }}
