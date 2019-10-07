@@ -48,14 +48,15 @@ jobs:
           echo "modified files are $modifiedNames"
           hasMatch=$(echo $modifiedNames | egrep 'learning.swift' || [[ $? == 1 ]] | echo "false")
           echo "realm hasMatch is $hasMatch" 
-          search=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
-          before=$(echo $search | egrep -o [0-9]+ | head -1)
-          after=$(echo $search | egrep -o [0-9]+ | tail -1 )
           if [ "$hasMatch" = "false" ]
           then 
             echo "No learning.swift is modified exiting"
             exit 0
-          elif [[ (! -z "$search") && "$before" -lt "$after" ]]
+          fi
+          search=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
+          before=$(echo $search | egrep -o [0-9]+ | head -1)
+          after=$(echo $search | egrep -o [0-9]+ | tail -1 )
+          if [[ (! -z "$search") && "$before" -lt "$after" ]]
           then
             echo "Good!"
             echo "$search"
