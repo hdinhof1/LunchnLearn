@@ -4,8 +4,6 @@ on:
     branches:
       - master
       - staging
-    paths:
-      - 'learning.swift'
 
 jobs:
   build:
@@ -41,6 +39,19 @@ jobs:
           echo "master branch base sha is $GIT_MASTER_BRANCH_SHA"
           echo "newline to trigger the bot"
           echo $(git log -n5 --pretty=oneline)
+      - name: Search if any realm related files have been modified
+        env:
+            GIT_PR_BRANCHNAME: ${{ github.head_ref }}
+            GIT_DESTINATION_BRANCHNAME: ${{ github.base_ref }}
+        run: |
+          filesToCheck='.github/workflows/realm-update-reminder.yml|learning.swift'
+          filesModified=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 --name-only | egrep $filesToCheck)
+          if [[ (! -z "$search");
+          then 
+            echo "Modified a Realm file, continue to check for version bump"
+          else
+            exit 0
+          fi
       - name: Search for higher Realm schema version
         env:
             GIT_PR_BRANCHNAME: ${{ github.head_ref }}
