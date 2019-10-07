@@ -46,7 +46,7 @@ jobs:
         run: |
           filesToCheck='.github/workflows/realm-update-reminder.yml|learning.swift'
           filesModified=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 --name-only | egrep $filesToCheck)
-          if [[ (! -z "$search");
+          if [ ! -z "$search" ];
           then 
             echo "Modified a Realm file, continue to check for version bump"
           else
