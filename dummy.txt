@@ -1,1 +1,2 @@
 blah
+status check but only modifying the dummy.text file
