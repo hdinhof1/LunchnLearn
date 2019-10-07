@@ -46,7 +46,7 @@ jobs:
         run: |
           modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
           echo "modified files are $modifiedNames"
-          filesModified=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only | ps -ef | { egrep 'learning.swift' || test $? = 1; } )
+          filesModified=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only | egrep 'learning.swift')
           echo "realm filesModified are $filesModified" 
           if [ ! -z "$filesModified" ]; then 
             echo "Modified a Realm file, continue to check for version bump"
@@ -57,6 +57,9 @@ jobs:
           fi
           echo "Good. Now to check for other cases"
         shell: bash
+      - name: failure case is now run
+        if: failure()
+        run: echo "This is run"
       - name: Compare for higher Realm schema version
         env:
             GIT_PR_BRANCHNAME: ${{ github.head_ref }}
