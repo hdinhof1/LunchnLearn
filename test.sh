@@ -1,4 +1,4 @@
-filesToCheck='realm-update-reminder.yml|learning.swift' # .yml here to remind that the path is based on the location of the file
+filesToCheck='learning.swift' # .yml here to remind that the path is based on the location of the file
 filesModified=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 --name-only | egrep $filesToCheck)
 if [ ! -z "$filesModified" ]
 then 
