@@ -2,7 +2,8 @@ echo "Beginning work"
 filesToCheck="learning.swift"
 filesModified=$(git diff master test-branch5 --unified=0 --name-only | egrep $filesToCheck)
 echo "filesModified is $filesModified" 
-if [ ! -z "$filesModified" ]; then 
+if [ ! -z "$filesModified" ]
+then 
 	echo "Modified a Realm file, continue to check for version bump"
 else
 	echo "No learning.swift is modified exiting"
