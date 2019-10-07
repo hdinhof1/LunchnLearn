@@ -53,15 +53,9 @@ jobs:
             exit 0
           else
             echo "Modified a Realm file, continue to check for version bump"
-            echo "realm files modified are $hasMatch"
           fi
           echo "Good. Now to check for other cases"
         shell: bash
-      - name: failure case is now run
-        if: failure()
-        run: |
-          echo "Exiting because no realm files have been modified."
-          exit 0
       - name: Compare for higher Realm schema version
         env:
             GIT_PR_BRANCHNAME: ${{ github.head_ref }}
