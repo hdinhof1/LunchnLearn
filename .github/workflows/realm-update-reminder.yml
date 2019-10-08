@@ -31,24 +31,27 @@ jobs:
           GIT_COMMIT_SHA: ${{ github.event.after }}
           GIT_TOKEN: ${{ github.token }}
         run: |
+          #echo "${GITHUB_REF:11}"
+          #echo "current commit sha: $GIT_COMMIT_SHA"
           git checkout "$GIT_PR_BRANCHNAME"
           git checkout "$GIT_DESTINATION_BRANCHNAME"
           git checkout "$GIT_PR_BRANCHNAME"
+          #echo $(git branch)
+          echo "master branch base sha is $GIT_MASTER_BRANCH_SHA"
+          echo "newline to trigger the bot"
+          echo $(git log -n5 --pretty=oneline)
       - name: Compare for higher Realm schema version
         env:
             GIT_PR_BRANCHNAME: ${{ github.head_ref }}
             GIT_DESTINATION_BRANCHNAME: ${{ github.base_ref }}
         run: |
-          echo "Check if we have modified any realm related files"
           modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
-          realmFilesList='learning.swift'
-          hasMatch=$(echo $modifiedNames | egrep "$realmFilesList" || [[ $? == 1 ]] | echo "false")
+          hasMatch=$(echo $modifiedNames | egrep 'learning.swift' || [[ $? == 1 ]] | echo "false")
           if [ "$hasMatch" = "false" ]
           then 
-            echo "No realm related files have been modified, exiting"
+            echo "No realm related files have been modified exiting"
             exit 0
           fi
-          echo "Compare for higher Realm schema version"
           search=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
           before=$(echo $search | egrep -o [0-9]+ | head -1)
           after=$(echo $search | egrep -o [0-9]+ | tail -1 )
