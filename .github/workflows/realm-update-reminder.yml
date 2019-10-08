@@ -73,7 +73,7 @@ jobs:
           else 
             echo "failure"
             echo "Empty or Invalid realm version found make sure that $before < $after"
-            echo "Instead got $search"
+            echo "Instead got \n $search"
             exit 11
           fi
         shell: bash
