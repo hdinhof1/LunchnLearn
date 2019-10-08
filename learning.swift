@@ -23,4 +23,4 @@ print("modify line git diff learning.swift")
 
 print("lets do a changed file in a pr")
 print("at work more stuff here")
-Realm.configureRealm(schemaVersion: 47)
+Realm.configureRealm(schemaVersion: 46)
