@@ -52,7 +52,12 @@ jobs:
             echo "No realm related files have been modified exiting"
             exit 0
           fi
-          search=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
+          search=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:' || [[ $? == 1 ]] | echo "didntModify")
+          if [[ (! -z "$search") && "$search" = "didntModify" ]]
+          then 
+            echo "Didnt modify app delegate, exiting"
+            exit 10
+          fi
           before=$(echo $search | egrep -o [0-9]+ | head -1)
           after=$(echo $search | egrep -o [0-9]+ | tail -1 )
           if [[ (! -z "$search") && "$before" -lt "$after" ]]
