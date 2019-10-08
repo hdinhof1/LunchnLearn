@@ -7,9 +7,8 @@ on:
       - develop
 
 jobs:
-  build:
-
-    name: remind
+  test_default_realm:
+    name: default.realm
 
     runs-on: ubuntu-latest
 
@@ -78,18 +77,8 @@ jobs:
           fi
         shell: bash
 
-name: realm-defaultUser-reminder 
-on:
-  pull_request:
-    branches:
-      - master
-      - staging
-      - develop
-
-jobs:
-  build:
-
-    name: remind defaultUser
+  test_defaultUser_realm:
+    name: defaultUser.realm
 
     runs-on: ubuntu-latest
 
