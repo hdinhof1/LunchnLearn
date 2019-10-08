@@ -48,9 +48,9 @@ jobs:
           declare -a array=("one", "two")
           declare -a secondArray=("1", "two")
           arraylength=${#array[@]}
-          for (( i=1; i<${arraylength}+1; i++ ));
+          for (( i=0; i<${arraylength}; i++ ));
           do
-            echo $i " / " ${arraylength} " : " ${array[$i-1]}
+            echo $i " / " ${arraylength} " : " ${array[$i]}
           done
           modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
           hasMatch=$(echo $modifiedNames | egrep 'learning.swift' || [[ $? == 1 ]] | echo "false")

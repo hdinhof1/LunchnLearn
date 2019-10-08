@@ -1,11 +1,32 @@
 echo "Beginning work"
 # make an array here with the two different versions defaultUser and default realm
-declare -a array=("one", "two")
-declare -a secondArray=("1", "two")
+declare -a array=("learning.swift", "defaultUser.swift")
+declare -a secondArray=("Realm.configureRealm\(schemaVersion:", "Realm.Configuration\(schemaVersion: ")
 arraylength=${#array[@]}
-for (( i=1; i<${arraylength}+1; i++ ));
+for (( i=0; i<${arraylength}; i++ ));
 do
-	echo $i " / " ${arraylength} " : " ${array[$i-1]}
+	echo $i " / " ${arraylength} " : " ${array[$i]}
+	search=$(git diff master test-branch7 --unified=0 -G'Realm.configureRealm\(schemaVersion:' "${array[$i]}"  | egrep '[+-]Realm.configureRealm\(schemaVersion:' || [[ $? == 1 ]] | echo "didntModify")
+	if [[ (! -z "$search") && "$search" = "didntModify" ]]
+    then 
+        echo "Didnt update schemaVersion number at all, exiting"
+        exit 10
+    fi
+    before=$(echo $search | egrep -o [0-9]+ | head -1)
+    after=$(echo $search | egrep -o [0-9]+ | tail -1)
+    if [[ (! -z "$search") && "$before" -lt "$after" ]]
+    then
+        echo "Good!"
+        echo "$search"
+        echo "- old version was $before"
+        echo "+ new version is  $after"
+        exit 0
+    else 
+        echo "failure"
+        echo "Empty or Invalid realm version found make sure that $before < $after"
+        echo "Instead got $search"
+        exit 1
+    fi
 done
 ### back to normal
 filesToCheck="learning.swift"
