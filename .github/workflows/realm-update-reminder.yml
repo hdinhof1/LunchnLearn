@@ -45,18 +45,12 @@ jobs:
             GIT_PR_BRANCHNAME: ${{ github.head_ref }}
             GIT_DESTINATION_BRANCHNAME: ${{ github.base_ref }}
         run: |
-          declare -a array=("one", "two")
-          declare -a secondArray=("1", "two")
-          arraylength=${#array[@]}
-          for (( i=0; i<${arraylength}; i++ ));
-          do
-            echo $i " / " ${arraylength} " : " ${array[$i]}
-          done
           modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
           hasMatch=$(echo $modifiedNames | egrep 'learning.swift' || [[ $? == 1 ]] | echo "false")
-          if [ "$hasMatch" = "false" ]
-          then 
-            echo "No realm related files have been modified exiting"
+          hasAddedNewRealmModel=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G': Object')
+          if [[ "$hasMatch" = "false" && (-z "$hasAddedNewRealmModel") ]]
+          then
+            echo "No default.realm related files have been modified or created, exiting"
             exit 0
           fi
           search=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:' || [[ $? == 1 ]] | echo "didntModify")

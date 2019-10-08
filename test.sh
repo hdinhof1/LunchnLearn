@@ -1,4 +1,12 @@
 echo "Beginning work"
+modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
+hasMatch=$(echo $modifiedNames | egrep 'learning.swift|defaultUser.swift' || [[ $? == 1 ]] | echo "false")
+if [ "$hasMatch" = "false" ]
+then 
+	echo "No realm related files have been modified exiting"
+	exit 0
+fi
+# ': Object'
 # make an array here with the two different versions defaultUser and default realm
 declare -a array=("learning.swift", "defaultUser.swift")
 declare -a secondArray=("Realm.configureRealm\(schemaVersion:", "Realm.Configuration\(schemaVersion: ")
@@ -7,11 +15,6 @@ for (( i=0; i<${arraylength}; i++ ));
 do
 	echo $i " / " ${arraylength} " : " ${array[$i]}
 	search=$(git diff master test-branch7 --unified=0 -G'Realm.configureRealm\(schemaVersion:' "${array[$i]}"  | egrep '[+-]Realm.configureRealm\(schemaVersion:' || [[ $? == 1 ]] | echo "didntModify")
-	if [[ (! -z "$search") && "$search" = "didntModify" ]]
-    then 
-        echo "Didnt update schemaVersion number at all, exiting"
-        exit 10
-    fi
     before=$(echo $search | egrep -o [0-9]+ | head -1)
     after=$(echo $search | egrep -o [0-9]+ | tail -1)
     if [[ (! -z "$search") && "$before" -lt "$after" ]]
