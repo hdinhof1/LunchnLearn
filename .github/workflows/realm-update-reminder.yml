@@ -45,6 +45,13 @@ jobs:
             GIT_PR_BRANCHNAME: ${{ github.head_ref }}
             GIT_DESTINATION_BRANCHNAME: ${{ github.base_ref }}
         run: |
+          declare -a array=("one", "two")
+          declare -a secondArray=("1", "two")
+          arraylength=${#array[@]}
+          for (( i=1; i<${arraylength}+1; i++ ));
+          do
+            echo $i " / " ${arraylength} " : " ${array[$i-1]}
+          done
           modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
           hasMatch=$(echo $modifiedNames | egrep 'learning.swift' || [[ $? == 1 ]] | echo "false")
           if [ "$hasMatch" = "false" ]
