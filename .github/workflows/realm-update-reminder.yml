@@ -45,6 +45,7 @@ jobs:
             GIT_PR_BRANCHNAME: ${{ github.head_ref }}
             GIT_DESTINATION_BRANCHNAME: ${{ github.base_ref }}
         run: |
+          echo "Check if we have modified any realm related files"
           modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
           hasMatch=$(echo $modifiedNames | egrep 'learning.swift' || [[ $? == 1 ]] | echo "false")
           hasAddedNewRealmModel=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G': Object')
@@ -53,6 +54,7 @@ jobs:
             echo "No default.realm related files have been modified or created, exiting"
             exit 0
           fi
+          echo "Compare for higher Realm schema version"
           search=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:' || [[ $? == 1 ]] | echo "didntModify")
           if [[ (! -z "$search") && "$search" = "didntModify" ]]
           then 
