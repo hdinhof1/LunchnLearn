@@ -1,9 +1,10 @@
-name: realm-update-reminder
+name: realm-update-reminder 
 on:
   pull_request:
     branches:
       - master
       - staging
+      - develop
 
 jobs:
   build:
@@ -30,8 +31,8 @@ jobs:
           GIT_COMMIT_SHA: ${{ github.event.after }}
           GIT_TOKEN: ${{ github.token }}
         run: |
-          echo "${GITHUB_REF:11}"
-          echo "current commit sha: $GIT_COMMIT_SHA"
+          #echo "${GITHUB_REF:11}"
+          #echo "current commit sha: $GIT_COMMIT_SHA"
           git checkout "$GIT_PR_BRANCHNAME"
           git checkout "$GIT_DESTINATION_BRANCHNAME"
           git checkout "$GIT_PR_BRANCHNAME"
@@ -45,15 +46,18 @@ jobs:
             GIT_DESTINATION_BRANCHNAME: ${{ github.base_ref }}
         run: |
           modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
-          echo "modified files are $modifiedNames"
           hasMatch=$(echo $modifiedNames | egrep 'learning.swift' || [[ $? == 1 ]] | echo "false")
-          echo "realm hasMatch is $hasMatch" 
           if [ "$hasMatch" = "false" ]
           then 
-            echo "No learning.swift is modified exiting"
+            echo "No realm related files have been modified exiting"
             exit 0
           fi
-          search=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:')
+          search=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G'Realm.configureRealm\(schemaVersion:' learning.swift | egrep '[+-]Realm.configureRealm\(schemaVersion:' || [[ $? == 1 ]] | echo "didntModify")
+          if [[ (! -z "$search") && "$search" = "didntModify" ]]
+          then 
+            echo "Didnt modify app delegate, exiting"
+            exit 10
+          fi
           before=$(echo $search | egrep -o [0-9]+ | head -1)
           after=$(echo $search | egrep -o [0-9]+ | tail -1 )
           if [[ (! -z "$search") && "$before" -lt "$after" ]]
