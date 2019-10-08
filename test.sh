@@ -1,4 +1,13 @@
 echo "Beginning work"
+# make an array here with the two different versions defaultUser and default realm
+declare -a array=("one", "two")
+declare -a secondArray=("1", "two")
+arraylength=${#array[@]}
+for (( i=1; i<${arraylength}+1; i++ ));
+do
+	echo $i " / " ${arraylength} " : " ${array[$i-1]}
+done
+### back to normal
 filesToCheck="learning.swift"
 modifiedNames=$(git diff master test-branch5 --name-only)
 filesModified=$(git diff master test-branch5 --name-only | egrep 'learning.swift' || "")
