@@ -1,3 +1,0 @@
-final public class SurveyChoice: Object {
-	// just put a choice object here
-}
