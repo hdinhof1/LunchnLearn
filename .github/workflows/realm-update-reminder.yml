@@ -117,7 +117,7 @@ jobs:
           echo "Check if we have modified any realm related files"
           modifiedNames=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --name-only)
           hasMatch=$(echo $modifiedNames | egrep '' || [[ $? == 1 ]] | echo "false")
-          hasAddedNewRealmModel=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G': Object')
+          hasAddedNewRealmModel=$(git diff "$GIT_DESTINATION_BRANCHNAME" "$GIT_PR_BRANCHNAME" --unified=0 -G': Object' ':(exclude).github' ':(exclude)test.sh')
           if [[ "$hasMatch" = "false" && (-z "$hasAddedNewRealmModel") ]]
           then
             echo "No default.realm related files have been modified or created, exiting"
